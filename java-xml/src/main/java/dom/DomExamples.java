@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 public class DomExamples {
 
     public List<String> getTitles() {
-        List<String> titleTexts = new ArrayList<>();
+        var titleTexts = new ArrayList<String>();
         try {
             // DOM fa beolvasása az XML alapján
 //            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -50,8 +51,40 @@ public class DomExamples {
         return titleTexts;
     }
 
-    public static void main(String[] args) {
+    public List<Book> getBooks(Reader reader) {
+        // Book objektumok listáját adja vissza
+        var bookObjects = new ArrayList<Book>();
+        try {
+            var factory = DocumentBuilderFactory.newInstance();
+            var builder = factory.newDocumentBuilder();
+            var document = builder.parse(new InputSource(reader));
+
+            // Book Elementek lekérése a DOM fából
+            var books = document.getElementsByTagName("book");
+
+            // Iterálás az Elementeken
+            for (int i = 0; i < books.getLength(); i++) {
+                var book = (Element) books.item(i);
+                var title = book.getElementsByTagName("title").item(0);
+                var text = title.getTextContent();
+                var isbn10 = book.getAttribute("isbn10");
+                var available = book.getElementsByTagName("available").getLength() > 0 ? Book.Available.IS_AVAILABLE : Book.Available.NOT_AVAILABLE;
+                var bookObject = new Book(text, isbn10, available);
+                bookObjects.add(bookObject);
+            }
+
+            // Mindegyikből lekérjük a Title Element szöveges tartalmát
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new IllegalStateException("Can not read file.", e);
+        }
+        return bookObjects;
+    }
+
+    public static void main(String[] args) throws IOException {
         var titles = new DomExamples().getTitles();
         System.out.println(titles);
+
+        var books = new DomExamples().getBooks(Files.newBufferedReader(Path.of("src/main/resources/catalog.xml")));
+        System.out.println(books);
     }
 }

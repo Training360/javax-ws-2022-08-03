@@ -1,8 +1,13 @@
 package dom;
 
 import org.junit.jupiter.api.Test;
+import org.xmlunit.assertj.XmlAssert;
+import org.xmlunit.builder.Input;
+import org.xmlunit.diff.DefaultNodeMatcher;
+import org.xmlunit.diff.ElementSelectors;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -57,5 +62,49 @@ class DomExamplesTest {
         assertThat(books)
                 .extracting(Book::getTitle, Book::getIsbn10)
                 .contains(tuple("Java and XML", "059610149X"));
+    }
+
+    @Test
+    void write() throws IOException {
+        // Given
+        var domExamples = new DomExamples();
+        var books = List.of(
+                new Book("title1", "isbn1", Book.Available.NOT_AVAILABLE),
+                new Book("title2", "isbn2", Book.Available.IS_AVAILABLE)
+        );
+        // When
+        var writer = new StringWriter();
+        domExamples.write(books, writer);
+
+        // Then
+        // var expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><catalog><book isbn10=\"isbn1\"><title>title1</title></book><book isbn10=\"isbn2\"><title>title2</title></book></catalog>";
+        var expected = """
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <catalog>
+                  <book isbn10="isbn1">
+                    <title>title1</title>
+                  </book>
+                  <book isbn10="isbn2">
+                    <title>title2</title>
+                  </book>
+                </catalog>
+                """.replace("\n", "\r\n");
+        assertEquals(expected, writer.toString());
+
+        XmlAssert
+                .assertThat(writer.toString())
+                .valueByXPath("/catalog/book[2]/title")
+                .isEqualTo("title2");
+
+//        var expected2 = Files.readString(Path.of("src/test/resources/expected-catalog.xml")).replace("\n", "\r\n");;
+
+//        System.out.println(writer.toString());
+
+        XmlAssert.assertThat(writer.toString())
+                .and(Input.fromFile("src/test/resources/expected-catalog.xml"))
+                .ignoreElementContentWhitespace()
+                .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndAllAttributes))
+//                .ignoreChildNodesOrder()
+                .areSimilar();
     }
 }

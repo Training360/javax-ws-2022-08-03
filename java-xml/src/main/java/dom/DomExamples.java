@@ -2,12 +2,15 @@ package dom;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,11 @@ public class DomExamples {
 
             var factory = DocumentBuilderFactory.newInstance();
             var builder = factory.newDocumentBuilder();
-            var document = builder.parse(DomExamples.class.getResourceAsStream("/catalog.xml"));
+            // getResourceAsStream működik, ha az alkalmazásod JAR/WAR fájlán belül van az XML
+//            var document = builder.parse(DomExamples.class.getResourceAsStream("/catalog.xml"));
+//            var document = builder.parse(Path.of("src/main/resources/catalog.xml").toFile());
+//            var document = builder.parse(Files.newInputStream(Path.of("src/main/resources/catalog.xml")));
+            var document = builder.parse(new InputSource(Files.newBufferedReader(Path.of("src/main/resources/catalog.xml"))));
 
             // Book Elementek lekérése a DOM fából
             var books = document.getElementsByTagName("book");

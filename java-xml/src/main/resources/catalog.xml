@@ -4,6 +4,7 @@
 
     <book isbn10="059610149X">
         <title>Java and XML</title>
+        <author>John Doe</author>
         <available />
     </book>
     <book isbn10="1590597060">

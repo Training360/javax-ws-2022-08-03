@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="8fb5ed63-8dea-49aa-ab66-f1ac415dbfc1" activeEnvironment="Default" name="calculator?wsdl" resourceRoot="" soapui-version="5.6.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="f85c390b-2627-4d2c-b1d7-c953a2dd26e9" wsaVersion="NONE" name="SimpleCalculatorEndpointServiceSoapBinding" type="wsdl" bindingName="{http://calculator/}SimpleCalculatorEndpointServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/services/calculator?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/services/calculator?wsdl"><con:part><con:url>http://localhost:8080/services/calculator?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SimpleCalculatorEndpointService" targetNamespace="http://calculator/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://calculator/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="https://training360.com/ns/calculator">
+  <wsdl:import location="http://localhost:8080/services/calculator?wsdl=CalculatorEndpoint.wsdl" namespace="https://training360.com/ns/calculator"></wsdl:import>
+  <wsdl:binding name="SimpleCalculatorEndpointServiceSoapBinding" type="ns1:CalculatorEndpoint">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="add">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="add">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SimpleCalculatorEndpointService">
+    <wsdl:port binding="tns:SimpleCalculatorEndpointServiceSoapBinding" name="SimpleCalculatorEndpointPort">
+      <soap:address location="http://localhost:8080/services/calculator"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://localhost:8080/services/calculator?wsdl=CalculatorEndpoint.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CalculatorEndpoint" targetNamespace="https://training360.com/ns/calculator" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="https://training360.com/ns/calculator">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://training360.com/ns/calculator" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://training360.com/ns/calculator">
+      <xs:complexType name="calculatorRequest">
+        <xs:sequence>
+          <xs:element name="Param1" type="xs:int"/>
+          <xs:element name="Param2" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="calculatorResponse">
+        <xs:sequence>
+          <xs:element name="Result" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CalculatorRequest" nillable="true" type="calculatorRequest"/>
+      <xs:element name="CalculatorResponse" nillable="true" type="calculatorResponse"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="addResponse">
+    <wsdl:part element="ns1:CalculatorResponse" name="CalculatorResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="add">
+    <wsdl:part element="ns1:CalculatorRequest" name="CalculatorRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CalculatorEndpoint">
+    <wsdl:operation name="add">
+      <wsdl:input message="ns1:add" name="add"></wsdl:input>
+      <wsdl:output message="ns1:addResponse" name="addResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/services/calculator</con:endpoint></con:endpoints><con:operation id="0264fbf9-352e-4054-a236-10a8e229e139" isOneWay="false" action="" name="add" bindingOperationName="add" type="Request-Response" outputName="addResponse" inputName="add" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="55123996-36fd-4c76-bf18-c1c7fe15b4c4" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/services/calculator</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cal="https://training360.com/ns/calculator">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cal:CalculatorRequest>\r
+         <cal:Param1>1</cal:Param1>\r
+         <cal:Param2>2</cal:Param2>\r
+      </cal:CalculatorRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://calculator/CalculatorEndpoint/add"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="9186f711-30da-4871-aa22-32034f069c5b" name="SimpleCalculatorEndpointServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="23c598bf-e9d9-4cd2-a967-cb196f9c6448" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="add TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="56f55e57-5569-4cdd-b3d6-ae2ae64ad9fb" name="add"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SimpleCalculatorEndpointServiceSoapBinding</con:interface><con:operation>add</con:operation><con:request name="add" id="4e67df35-a1ee-4e1e-9d46-606346d32cd0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/services/calculator</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cal="https://training360.com/ns/calculator">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cal:CalculatorRequest>\r
+         <cal:Param1>5</cal:Param1>\r
+         <cal:Param2>10</cal:Param2>\r
+      </cal:CalculatorRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="XPath Match" id="b18b5064-2225-408e-a0c4-7fcd0953e460" name="XPath Match"><con:configuration><path>declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace calc='https://training360.com/ns/calculator';
+//calc:Result</path><content>15</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://calculator/CalculatorEndpoint/add" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

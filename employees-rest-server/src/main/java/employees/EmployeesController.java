@@ -1,10 +1,10 @@
 package employees;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +20,20 @@ public class EmployeesController {
     public List<EmployeeDto> listEmployees(@RequestParam Optional<String> prefix) {
         return service.listEmployees(prefix);
     }
+
+    @GetMapping("/{id}")
+    public EmployeeDto findEmployeeById(@PathVariable("id") long id) {
+        return service.findEmployeeById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody CreateEmployeeCommand command,
+                                                      UriComponentsBuilder builder) {
+        var created = service.createEmployee(command);
+        return ResponseEntity
+                .created(builder.path("/api/employees/{id}").buildAndExpand(created.getId()).toUri())
+                .body(created);
+    }
+
+
 }

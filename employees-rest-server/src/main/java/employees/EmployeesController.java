@@ -1,6 +1,7 @@
 package employees;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/employees")
 @AllArgsConstructor
+@Slf4j
 public class EmployeesController {
 
     private EmployeesService service;
@@ -19,6 +21,12 @@ public class EmployeesController {
     @GetMapping
     public List<EmployeeDto> listEmployees(@RequestParam Optional<String> prefix) {
         return service.listEmployees(prefix);
+    }
+
+    @GetMapping("/details")
+    public List<EmployeeDto> listEmployeesByQueryCriteria(QueryCriteria criteria) {
+        log.info("Criteria: " + criteria);
+        return List.of();
     }
 
     @GetMapping("/{id}")

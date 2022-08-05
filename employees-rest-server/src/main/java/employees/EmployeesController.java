@@ -35,5 +35,16 @@ public class EmployeesController {
                 .body(created);
     }
 
+    @PutMapping("/{id}")
+    public EmployeeDto updateEmployee(@PathVariable("id") long id, @RequestBody UpdateEmployeeCommand command) {
+        return service.updateEmployee(id, command);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable("id") long id) {
+        service.deleteEmployee(id);
+    }
+
 
 }

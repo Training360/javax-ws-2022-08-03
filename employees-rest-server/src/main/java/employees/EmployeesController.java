@@ -46,5 +46,9 @@ public class EmployeesController {
         service.deleteEmployee(id);
     }
 
-
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public void handleIllegalArgumentException(IllegalArgumentException e) {
+//
+//    }
 }

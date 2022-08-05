@@ -3,7 +3,6 @@ package employees;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,14 +26,14 @@ public class EmployeesService {
     public List<EmployeeDto> listEmployees(Optional<String> prefix) {
         List<Employee> filtered = employees.stream()
                 .filter(e -> prefix.isEmpty() || e.getName().toLowerCase().startsWith(prefix.get().toLowerCase()))
-                .collect(Collectors.toList());
+                .toList();
         return employeeMapper.toDto(filtered);
     }
 
     public EmployeeDto findEmployeeById(long id) {
         return employeeMapper.toDto(employees.stream()
                 .filter(e -> e.getId() == id).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + id)));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found: " + id, id)));
     }
 
     public EmployeeDto createEmployee(CreateEmployeeCommand command) {
@@ -46,7 +45,7 @@ public class EmployeesService {
     public EmployeeDto updateEmployee(long id, UpdateEmployeeCommand command) {
         Employee employee = employees.stream()
                 .filter(e -> e.getId() == id)
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Employee not found: " + id));
+                .findFirst().orElseThrow(() -> new EmployeeNotFoundException("Employee not found: " + id, id));
         employee.setName(command.getName());
         return employeeMapper.toDto(employee);
     }
@@ -54,7 +53,7 @@ public class EmployeesService {
     public void deleteEmployee(long id) {
         Employee employee = employees.stream()
                 .filter(e -> e.getId() == id)
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Employee not found: " + id));
+                .findFirst().orElseThrow(() -> new EmployeeNotFoundException("Employee not found: " + id, id));
         employees.remove(employee);
     }
 }

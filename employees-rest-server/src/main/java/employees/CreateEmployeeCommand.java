@@ -14,5 +14,6 @@ public class CreateEmployeeCommand {
 
     @Schema(description = "the name of the created employee", example = "Jane Doe")
     @NotBlank(message = "the name can not be empty")
+    @ValidName(partNumber = 3)
     private String name;
 }
